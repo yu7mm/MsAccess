@@ -13,6 +13,8 @@ public class MsAccessDatabaseConnectionInJava8 {
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
+        int x;
+        String s;
 
         // Step 1: Loading or registering Oracle JDBC driver class
         try {
