@@ -14,13 +14,10 @@ public class MsAccessDatabaseConnectionInJava8 {
         Statement statement = null;
         ResultSet resultSet = null;
 
-
         // Step 1: Loading or registering Oracle JDBC driver class
         try {
-
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
         } catch (ClassNotFoundException cnfex) {
-
             System.out.println("Problem in loading or registering MS Access JDBC driver");
             cnfex.printStackTrace();
         }
