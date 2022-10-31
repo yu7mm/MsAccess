@@ -24,7 +24,6 @@ public class MsAccessDatabaseConnectionInJava8 {
 
         // Step 2: Opening database connection
         try {
-
             String msAccessDBName = "D:/Java/bazazgrada.mdb";
             // String dbURL = "jdbc:odbc:Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=" + msAccessDBName + ";DriverID=22;READONLY=true";
             String dbURL = "jdbc:ucanaccess://" + msAccessDBName;
