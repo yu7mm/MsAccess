@@ -4,11 +4,34 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import Io.DbBrokerLocal;
+import java.util.ArrayList;
 
 public class MsAccessDatabaseConnectionInJava8 {
 
     public static void main(String[] args) {
+        String upit = "SELECT * FROM ZGRADE WHERE BRISANO = false AND SKRIVENO = false ORDER BY br";
+        DbBrokerLocal db = new DbBrokerLocal();
+        ArrayList<String[]> rez = db.getArr(upit);
+        System.out.println("Brojac\tID\tBr\tAdresa\t\t\t\tPIB");
+        System.out.println("======\t==\t====\t===============================\t===========");
+        int brojac = 0;
+        for (String[] s : rez) {
+            brojac++;
+            String adresa = srediAdresu(resultSet.getString(9));
+            System.out.println(brojac + "\t"
+                    + resultSet.getInt(1) + "\t"
+                    + resultSet.getString(2) + "\t"
+                    + adresa + "\t"
+                    + resultSet.getString(13));
+        }
+        
 
+        System.out.println("\nPročitano redova: " + brojac);
+    }
+
+            
+    private static void konekcija() {
         // variables
         Connection connection = null;
         Statement statement = null;
@@ -75,7 +98,8 @@ public class MsAccessDatabaseConnectionInJava8 {
             }
         }
     }
-
+    
+    
     private static String srediAdresu(String adr) {
         String adresa = adr;
         if (adr.length() < 30) {
