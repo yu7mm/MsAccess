@@ -1,0 +1,14 @@
+[pack]
+	buildbitmaps = false
+[core]
+	symlinks = false
+	repositoryformatversion = 0
+	filemode = false
+	logallrefupdates = true
+	bare = false
+[user]
+	name = yu7mm
+	email = yu7mm.so@gmail.com
+[remote "origin"]
+	url = https://yu7mm.so%40gmail.com@github.com/yu7mm/MsAccess.git
+	fetch = +refs/heads/*:refs/remotes/origin/*

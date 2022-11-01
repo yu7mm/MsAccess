@@ -1,0 +1,25 @@
+
+
+<DEVELOPING>true</DEVELOPING>
+<DEBUG>true</DEBUG>
+
+<BAZALOCAL>diplomski</BAZALOCAL>
+<BAZALOCALUSER>root</BAZALOCALUSER>
+<BAZALOCALPASS>root</BAZALOCALPASS>
+<BAZALOCALURL>hamcontest.rs:3306/edibot?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true</BAZALOCALURL>
+<BAZAURL>localhost:3306/diplomski?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true</BAZAURL>
+
+<BAZAREMOTE>bitsoft_rs_db_5</BAZAREMOTE>
+<BAZAREMOTEUSER>greenclea@b53409</BAZAREMOTEUSER>
+<BAZAREMOTEPASS>rhv,+7C>P*N.>A8></BAZAREMOTEPASS>
+<BAZAREMOTEURL>mysql685.loopia.se:3306/baza?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true</BAZAREMOTEURL>
+
+<ADVOPT>true</ADVOPT>
+
+
+  //sqlcli.HostName := 'localhost';
+  //sqlcli.User := 'root';
+  //sqlcli.Password := 'korisnik';
+   
+
+  

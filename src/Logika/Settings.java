@@ -17,14 +17,17 @@ public final class Settings {
     
     public String tabAdmin = "admin";
 
-    public static String dbUser = "root";
-    public static String dbPass = "root";
-    public static String dbUrl = "localhost:3306/" + "edibot" + "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true";
-    public static String dbUrl2 = "localhost:3306/" + "edibot" + "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true";
+    public static String dbUrlLoc = "localhost:3306/" + "edibot" + "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true";
+    public static String dbUrlRemote = "localhost:3306/" + "edibot" + "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true";
 
     public static boolean debug = true;
     public static boolean advancedOptions = false;
-    public static String glavnaBaza = "edibot";
+    public static String dbUserRemote;
+    public static String dbUserLoc = "root";
+    public static String dbPassRemote;
+    public static String dbPassLoc = "root";;
+    public static String glavnaBazaRemote;
+    public static String glavnaBazaLoc;
 
     
     public Settings() {
@@ -34,21 +37,21 @@ public final class Settings {
         sist = prop.get("os.name").toString();
         if (sist.contains("Windows")) {
             this.sistem = "windows";
-            dbPass = "edi";
+            dbPassLoc = "edi";
         } else {
             this.sistem = "linux";
-            dbPass = "edi";
+            dbPassLoc = "edi";
         }
 
         if (sist.contains("Windows 10")) {
             //dbPass="root";
-            dbPass = "edi";  // Za remote bazu
+            dbPassLoc = "edi";  // Za remote bazu
         }
 
 
         if (developing) {
-            dbUser = "root";
-            dbPass = "root";
+            dbUserLoc = "root";
+            dbPassLoc = "root";
         }
 
         settings("settings.xml");
@@ -82,24 +85,43 @@ public final class Settings {
                     temp = line.toUpperCase().replace("<DEBUG>", "").replace("</DEBUG>", "");
                     debug = (temp.contains("TRUE") || temp.contains("D") || temp.contains("Y") || temp.contains("1"));
                 }
-                if (line.toUpperCase().contains("<BAZA>")) {
-                    temp = line.replace("<BAZA>", "").replace("</BAZA>", "");
-                    glavnaBaza = temp;
-                    System.out.println("Učitana glavna baza: " + temp);
+                if (line.toUpperCase().contains("<BAZALOCAL>")) {
+                    temp = line.replace("<BAZALOCAL>", "").replace("</BAZALOCAL>", "");
+                    glavnaBazaLoc = temp;
+                    System.out.println("Učitana glavna baza local: " + temp);
                 }
-                if (line.toUpperCase().contains("BAZAPASS")) {
-                    temp = line.toUpperCase().replace("<BAZAPASS>", "").replace("</BAZAPASS>", "");
+                if (line.toUpperCase().contains("<BAZAREMOTE>")) {
+                    temp = line.replace("<BAZAREMOTE>", "").replace("</BAZAREMOTE>", "");
+                    glavnaBazaRemote = temp;
+                    System.out.println("Učitana glavna baza remote: " + temp);
+                }
+                if (line.toUpperCase().contains("BAZALOCALPASS")) {
+                    temp = line.toUpperCase().replace("<BAZALOCALPASS>", "").replace("</BAZALOCALPASS>", "");
                     temp = temp.toLowerCase();
-                    dbPass = temp;
+                    dbPassLoc = temp;
                 }
-                if (line.toUpperCase().contains("BAZAUSER")) {
-                    temp = line.toUpperCase().replace("<BAZAUSER>", "").replace("</BAZAUSER>", "");
+                if (line.toUpperCase().contains("BAZAREMOTEPASS")) {
+                    temp = line.toUpperCase().replace("<BAZAREMOTEPASS>", "").replace("</BAZAREMOTEPASS>", "");
                     temp = temp.toLowerCase();
-                    dbUser = temp;
+                    dbPassRemote = temp;
                 }
-                if (line.contains("BAZAURL")) {
-                    temp = line.replace("<BAZAURL>", "").replace("</BAZAURL>", "");
-                    dbUrl = temp;
+                if (line.toUpperCase().contains("BAZALOCALUSER")) {
+                    temp = line.toUpperCase().replace("<BAZALOCALUSER>", "").replace("</BAZALOCALUSER>", "");
+                    temp = temp.toLowerCase();
+                    dbUserLoc = temp;
+                }
+                if (line.toUpperCase().contains("BAZAREMOTEUSER")) {
+                    temp = line.toUpperCase().replace("<BAZAREMOTEUSER>", "").replace("</BAZAREMOTEUSER>", "");
+                    temp = temp.toLowerCase();
+                    dbUserRemote = temp;
+                }
+                if (line.contains("BAZALOCALURL")) {
+                    temp = line.replace("<BAZALOCALURL>", "").replace("</BAZALOCALURL>", "");
+                    dbUrlLoc = temp;
+                }
+                if (line.contains("BAZAREMOTEURL")) {
+                    temp = line.replace("<BAZAREMOTEURL>", "").replace("</BAZAREMOTEURL>", "");
+                    dbUrlRemote = temp;
                 }
 
                 if (line.contains("ADVOPT")) {
