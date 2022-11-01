@@ -38,6 +38,7 @@ public class DbBrokerLocal {
     public boolean conn() {
         try {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            System.out.println("Adresa baze: " + address);
             conn = DriverManager.getConnection("jdbc:ucanaccess://" + address);
             //conn.setAutoCommit(false);
             return true;
@@ -112,7 +113,7 @@ public class DbBrokerLocal {
             ResultSet rs = st.executeQuery(query);
             ResultSetMetaData rsMdata = rs.getMetaData();
             int colNo = rsMdata.getColumnCount();
-            ArrayList<String[]> resultList = new ArrayList<String[]>();
+            ArrayList<String[]> resultList = new ArrayList<>();
             // System.out.println("Upit iz klase DbBrokerLocal: " + query);
             while (rs.next()) {
                 String[] rw = new String[colNo];

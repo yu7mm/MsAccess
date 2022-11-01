@@ -5,25 +5,29 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import Io.DbBrokerLocal;
+import Logika.Settings;
 import java.util.ArrayList;
 
 public class MsAccessDatabaseConnectionInJava8 {
 
     public static void main(String[] args) {
-        String upit = "SELECT * FROM ZGRADE WHERE BRISANO = false AND SKRIVENO = false ORDER BY br";
+        Settings sett = new Settings();
+        String upit = "SELECT id, br, adresa, pib FROM ZGRADE WHERE BRISANO = false AND SKRIVENO = false ORDER BY br";
         DbBrokerLocal db = new DbBrokerLocal();
+        db.conn();
         ArrayList<String[]> rez = db.getArr(upit);
+        db.close();
         System.out.println("Brojac\tID\tBr\tAdresa\t\t\t\tPIB");
         System.out.println("======\t==\t====\t===============================\t===========");
         int brojac = 0;
         for (String[] s : rez) {
             brojac++;
-            String adresa = srediAdresu(s[9]);
+            String adresa = srediAdresu(s[2]);
             System.out.println(brojac + "\t"
+                    + s[0] + "\t"
                     + s[1] + "\t"
-                    + s[2] + "\t"
                     + adresa + "\t"
-                    + s[13]);
+                    + s[3]);
         }
 
         System.out.println("\nPročitano redova: " + brojac);
