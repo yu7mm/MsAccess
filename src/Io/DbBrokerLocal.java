@@ -40,7 +40,7 @@ public class DbBrokerLocal {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
             System.out.println("Adresa baze: " + address);
             conn = DriverManager.getConnection("jdbc:ucanaccess://" + address);
-            //conn.setAutoCommit(false);
+            conn.setAutoCommit(false);
             return true;
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Problem kod učitavanja ili registrovanja MS Access JDBC drivera\n" + e);
