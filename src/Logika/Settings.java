@@ -11,23 +11,20 @@ import java.util.logging.Logger;
 public final class Settings {
 
     public int id;
-    public boolean developing = false;
-    public String sistem;
-    public String putanja;
-    
-    public String tabAdmin = "admin";
-
-    public static String dbUrlLoc = "localhost:3306/" + "edibot" + "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true";
-    public static String dbUrlRemote = "localhost:3306/" + "edibot" + "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true";
-
+    public static String sistem;
+    public static String putanja;
+    public static boolean developing = false;
     public static boolean debug = true;
     public static boolean advancedOptions = false;
-    public static String dbUserRemote;
-    public static String dbUserLoc = "root";
-    public static String dbPassRemote;
-    public static String dbPassLoc = "root";;
-    public static String bazaRemote;
-    public static String bazaLoc;
+
+    public static String dbUrlLoc = "D:/Java/bazazgrada.mdb";
+    public static String dbUrlRemote = "localhost:3306/bitsoft_rs_db_5?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true";
+    public static String dbUserRemote = "root";
+    public static String dbUserLoc;
+    public static String dbPassRemote = "root";
+    public static String dbPassLoc;
+    public static String bazaRemote = "bitsoft_rs_db_5";
+    public static String bazaLoc = "bitsoft_rs_db_5";
 
     
     public Settings() {
