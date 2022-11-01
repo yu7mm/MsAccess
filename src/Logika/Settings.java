@@ -20,6 +20,7 @@ public final class Settings {
     public static String dbUser = "root";
     public static String dbPass = "root";
     public static String dbUrl = "localhost:3306/" + "edibot" + "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true";
+    public static String dbUrl2 = "localhost:3306/" + "edibot" + "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true";
 
     public static boolean debug = true;
     public static boolean advancedOptions = false;
