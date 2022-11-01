@@ -18,12 +18,12 @@ public class MsAccessDatabaseConnectionInJava8 {
         int brojac = 0;
         for (String[] s : rez) {
             brojac++;
-            String adresa = srediAdresu(resultSet.getString(9));
+            String adresa = srediAdresu(s[9]);
             System.out.println(brojac + "\t"
-                    + resultSet.getInt(1) + "\t"
-                    + resultSet.getString(2) + "\t"
+                    + s[1] + "\t"
+                    + s[2] + "\t"
                     + adresa + "\t"
-                    + resultSet.getString(13));
+                    + s[13];
         }
         
 
