@@ -23,9 +23,8 @@ public class MsAccessDatabaseConnectionInJava8 {
                     + s[1] + "\t"
                     + s[2] + "\t"
                     + adresa + "\t"
-                    + s[13];
+                    + s[13]);
         }
-        
 
         System.out.println("\nPročitano redova: " + brojac);
     }

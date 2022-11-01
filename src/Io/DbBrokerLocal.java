@@ -2,7 +2,6 @@
 package Io;
 
 import Logika.Settings;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -19,23 +18,12 @@ import java.util.logging.Logger;
 public class DbBrokerLocal {
 
     public String greska = "";
-    private String address;
+    private String address = "D:/Java/bazazgrada.mdb";
     private String user;
     private String pass;
     private Connection conn;
 
     public DbBrokerLocal() {
-        //this.address = "localhost:3306/" +Settings.glavnaBaza+ "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true";
-        /*
-        if (sett.developing) {
-            this.address = "localhost:3306/" + Settings.glavnaBaza + "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true";
-            //this.address = "localhost:3306/" + Settings.glavnaBaza1 + "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false";
-        } else {
-            this.address = "hamcontest.rs:3306/" + Settings.glavnaBaza + "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true";
-        }
-        */
-        //this.address="localhost:3306/" +Settings.glavnaBaza1+ "?useUnicode=true&characterEncoding=UTF-8";
-        //this.address="localhost:3306/" +Settings.glavnaBaza1+ "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false";
         this.user = Settings.dbUserLoc;
         this.pass = Settings.dbPassLoc;
         this.address = Settings.dbUrlLoc;
@@ -49,19 +37,12 @@ public class DbBrokerLocal {
 
     public boolean conn() {
         try {
-            //Class.forName("com.mysql.jdbc.Driver").newInstance();
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            //String jdbc = "jdbc:mysql://localhost/unicode?user=unicode&password=mypass123";
-            // String jdbcutf8 = "&useUnicode=true&characterEncoding=UTF-8";
-            // conn = DriverManager.getConnection(jdbc+jdbcutf8);
-            //address = "localhost:3306/edibot?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false";
-            //if (Settings.debug) System.out.println("<DbBroker> Konektujem se na bazu na adresi: " + address + ", user: " + user + ", pass: " + pass);
-            conn = DriverManager.getConnection("jdbc:mysql://" + address, user, pass);
-            conn.setAutoCommit(false);
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            conn = DriverManager.getConnection("jdbc:ucanaccess://" + address);
+            //conn.setAutoCommit(false);
             return true;
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Problem kod učitavanja ili registrovanja MS Access JDBC drivera\n" + e);
             return false;
         }
     }
@@ -70,7 +51,7 @@ public class DbBrokerLocal {
         try {
             conn.commit();
             conn.close();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println(e);
         }
     }
@@ -265,22 +246,6 @@ public class DbBrokerLocal {
         return greska;
     }
 
-    // Procedura u bazi koja odredjuje kontinent i zemlju
-    public boolean storedProc(String znak, String baza) {
-        System.out.println("Uskladistena procedura radi obracun za: " + znak + ", " + baza);
-        try {
-            String query = "{CALL " + baza + ".`00-Provera UC po prijemu dnevnika`(?)}";
-            CallableStatement stmt = conn.prepareCall(query);
-            stmt.setString(1, "'" + znak + "'");
-            stmt.executeQuery();
-            //System.out.println(rs.toString());
-            System.out.println("Uspesno uradjena procedura za " + znak);
-            return true;
-        } catch (SQLException ex) {
-            System.out.println("Greska kod pokretanja uskladistene procedure! " + ex.toString());
-            return false;
-        }
-    }
 
     public void commit() {
         try {

@@ -26,8 +26,8 @@ public final class Settings {
     public static String dbUserLoc = "root";
     public static String dbPassRemote;
     public static String dbPassLoc = "root";;
-    public static String glavnaBazaRemote;
-    public static String glavnaBazaLoc;
+    public static String bazaRemote;
+    public static String bazaLoc;
 
     
     public Settings() {
@@ -87,12 +87,12 @@ public final class Settings {
                 }
                 if (line.toUpperCase().contains("<BAZALOCAL>")) {
                     temp = line.replace("<BAZALOCAL>", "").replace("</BAZALOCAL>", "");
-                    glavnaBazaLoc = temp;
+                    bazaLoc = temp;
                     System.out.println("Učitana glavna baza local: " + temp);
                 }
                 if (line.toUpperCase().contains("<BAZAREMOTE>")) {
                     temp = line.replace("<BAZAREMOTE>", "").replace("</BAZAREMOTE>", "");
-                    glavnaBazaRemote = temp;
+                    bazaRemote = temp;
                     System.out.println("Učitana glavna baza remote: " + temp);
                 }
                 if (line.toUpperCase().contains("BAZALOCALPASS")) {
