@@ -10,27 +10,20 @@ public class MsAccessDatabaseConnectionInJava8 {
     public static void main(String[] args) {
 
         // variables
-        // PROBNI KOMENT
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
-        int x;
-        String s;
-        double d;
 
         // Step 1: Loading or registering Oracle JDBC driver class
         try {
-
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
         } catch (ClassNotFoundException cnfex) {
-
             System.out.println("Problem in loading or registering MS Access JDBC driver");
             cnfex.printStackTrace();
         }
 
         // Step 2: Opening database connection
         try {
-
             String msAccessDBName = "D:/Java/bazazgrada.mdb";
             // String dbURL = "jdbc:odbc:Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=" + msAccessDBName + ";DriverID=22;READONLY=true";
             String dbURL = "jdbc:ucanaccess://" + msAccessDBName;
