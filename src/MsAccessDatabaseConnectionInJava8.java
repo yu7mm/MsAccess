@@ -327,11 +327,11 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
         // dakle sa ugnjezdenim petljama
         for (int j = 1; j <= prolaza; j++) {
             //if (Sinhronizacija.odustani) then break;
-            System.out.println("  PROLAZ: " + j);
-            p.extPrikazInfo("      PROLAZ: " + j);
             if (j == prolaza) {
                 sl = slogova - ((prolaza - 1) * maxSlogova);
             }
+            System.out.println("    PROLAZ: " + j + " - slogova: " + sl);
+            p.extPrikazInfo("      PROLAZ: " + j + " - slogova: " + sl);
             StringBuilder sb = new StringBuilder();
             //MyText = TStringlist.create;
             //sqlcli.StartTransaction();
