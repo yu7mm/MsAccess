@@ -16,7 +16,6 @@
 <BAZAREMOTEPASS>rhv,+7C>P*N.>A8></BAZAREMOTEPASS>
 <BAZAREMOTEURL>mysql685.loopia.se:3306/bitsoft_rs_db_5?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true</BAZAREMOTEURL>
 
-<BAZAREMOTE>bitsoft_rs_db_5</BAZAREMOTE>
 <BAZAREMOTEUSER>root</BAZAREMOTEUSER>
 <BAZAREMOTEPASS>korisnik</BAZAREMOTEPASS>
 <BAZAREMOTEURL>localhost:3306/bitsoft_rs_db_5?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true</BAZAREMOTEURL>

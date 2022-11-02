@@ -35,9 +35,11 @@ public class DbBrokerLocal {
         this.pass = pass;
     }
 
+
     public boolean conn() {
         try {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            //address += ";keepMirror=C:/bazaZgMirror";
             System.out.println("Adresa baze: " + address);
             conn = DriverManager.getConnection("jdbc:ucanaccess://" + address);
             conn.setAutoCommit(false);
