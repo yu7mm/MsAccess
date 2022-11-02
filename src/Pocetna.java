@@ -1,4 +1,7 @@
 
+import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 
@@ -25,6 +28,11 @@ public class Pocetna extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sinhronizacija baze podataka");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         btnSinhronizuj.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnSinhronizuj.setText("Sinhronizuj");
@@ -36,6 +44,7 @@ public class Pocetna extends javax.swing.JFrame {
         });
 
         lblStatus.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblStatus.setForeground(new java.awt.Color(255, 0, 0));
         lblStatus.setText("Učitavam bazu podataka, molim sačekajte...");
 
         taText.setColumns(20);
@@ -81,17 +90,37 @@ public class Pocetna extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSinhronizujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSinhronizujActionPerformed
-        MsAccessDatabaseConnectionInJava8.sinhronizuj();
+        //btnSinhronizuj.setEnabled(false);
+        //taText.removeAll();
+        boolean uspeh = priprema();
+        if (uspeh) {
+            uspeh = MsAccessDatabaseConnectionInJava8.sinhronizuj();
+        }
+        
+        if (uspeh) {
+            btnSinhronizuj.setEnabled(true);
+            taText.append("Kraj sinhronizacije!\n");
+            lblStatus.setForeground(Color.blue);
+            lblStatus.setText("Sinhronizacija završena!");
+        }
     }//GEN-LAST:event_btnSinhronizujActionPerformed
 
+    
     private void btnZgradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZgradeActionPerformed
         String zgrade = MsAccessDatabaseConnectionInJava8.prikaziZgrade();
-        taText.removeAll();
-        taText.append(zgrade);
+        lblStatus.setText("Spreman za rad");
+        lblStatus.setForeground(new java.awt.Color(0, 195, 0));
+        taText.setText(zgrade);
     }//GEN-LAST:event_btnZgradeActionPerformed
+
+    
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        MsAccessDatabaseConnectionInJava8.izlaz();
+    }//GEN-LAST:event_formWindowClosing
 
 
     public static void main(String args[]) {
@@ -125,10 +154,20 @@ public class Pocetna extends javax.swing.JFrame {
         MsAccessDatabaseConnectionInJava8.init();
         p.btnSinhronizuj.setEnabled(true);
         p.btnZgrade.setEnabled(true);
+        p.lblStatus.setForeground(new java.awt.Color(0, 195, 0));
         p.lblStatus.setText("Baza učitana!");
         //JOptionPane.showMessageDialog(null, "Baza učitana", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
         
     }
+    
+    private synchronized boolean priprema() {
+        taText.setText("Počinje sinhrnizacija...\n");
+        lblStatus.setForeground(Color.red);
+        lblStatus.setText("Započinjem sinhronizaciju...");
+        this.repaint();
+        return true;
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSinhronizuj;
@@ -137,4 +176,6 @@ public class Pocetna extends javax.swing.JFrame {
     private javax.swing.JLabel lblStatus;
     private javax.swing.JTextArea taText;
     // End of variables declaration//GEN-END:variables
+
+
 }

@@ -52,8 +52,10 @@ public class DbBrokerLocal {
 
     public void close() {
         try {
-            conn.commit();
-            conn.close();
+            if (conn != null) {
+                conn.commit();
+                conn.close();                
+            }
         } catch (SQLException e) {
             System.out.println(e);
         }

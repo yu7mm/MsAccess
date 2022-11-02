@@ -1,11 +1,11 @@
 
+import Io.DbBrokerLocal;
+import Logika.Settings;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import Io.DbBrokerLocal;
-import Logika.Settings;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -42,29 +42,15 @@ public class MsAccessDatabaseConnectionInJava8 {
         return sb.toString();
     }
     
-    public static void sinhronizuj() {
+    public static synchronized boolean sinhronizuj() {
         String upit = "SELECT id, br, adresa, pib, tabelastanova, tabelabanka, tabelazaduzenja "
                 + "FROM zgrade "
                 + "WHERE brisano = false AND skriveno = false "
                 + "ORDER BY adresa";
         ArrayList<String[]> rez = db.getArr(upit);
 
-        System.out.println("Brojac\tID\tBr\tAdresa\t\t\t\tPIB");
-        System.out.println("======\t==\t====\t===============================\t===========");
-        int brojac = 0;
-        for (String[] s : rez) {
-            brojac++;
-            String adresa = srediAdresu(s[2]);
-            System.out.println(brojac + "\t"
-                    + s[0] + "\t"
-                    + s[1] + "\t"
-                    + adresa + "\t"
-                    + s[3]);
-        }
-        System.out.println("\nPročitano redova: " + brojac);
-
         // Pocinjemo sinhronizaciju
-        brojac = 0;
+        int brojac = 0;
         System.out.println("Pronađeno zgrada: " + rez.size());
         for (String[] s : rez) {
             brojac++;
@@ -90,8 +76,9 @@ public class MsAccessDatabaseConnectionInJava8 {
             ArrayList<String[]> zaduzenja = db.getArr(upit);
             salji_zaduzenja(zaduzenja);
         }
+        System.out.println("Sinhronizacija završena");
         //ispisZaduzenja(db, 37);
-        db.close();
+        return true;
     }
 
     private static void ispisZaduzenja(DbBrokerLocal db, int zgrada) {
@@ -251,8 +238,7 @@ public class MsAccessDatabaseConnectionInJava8 {
 
     private static boolean salji_banka(ArrayList<String[]> banka) {
         System.out.println("Za ubacivanje iz tabele banka: " + banka.size());
-        int i, slogova;
-        String tt, t2, t3, t4, t5, t6, t7, t8, t9, u1, uplatilac, a;
+        String tt, t2, t3, t4, t5, t6, t7, t8, t9, u1, a;
         String slog;
         String slogA;
         boolean uspelo;
@@ -281,7 +267,7 @@ public class MsAccessDatabaseConnectionInJava8 {
             slog = "(sourceid, sifrastana, uplata, svrha, poznabr, brizvoda, datumusluge, godina, mesec, datum, zgrada, uplzaduz) " + slog;
             slog = "INSERT INTO `bitsoft_rs_db_5`.`finansije` " + slog;
 
-            System.out.println(slog);
+            //System.out.println(slog);
             /*
             slogA := Utf8Encode(slog);
             uspelo := true;
@@ -419,7 +405,7 @@ public class MsAccessDatabaseConnectionInJava8 {
                  */
                 
             }  // Zavrsena izrada slozenog upita
-            System.out.println(sviSlogovi);
+            //System.out.println(sviSlogovi);
             
             // Ovde poslati ceo paket za memorisanje u bazu
             //ShowMessage('Slog za slanje u bazu: u2=' + u2 + ', u3=' + u3 + ' '#13#10' ' + sviSlogovi + ' '#13#10' '); 
@@ -483,5 +469,10 @@ public class MsAccessDatabaseConnectionInJava8 {
              */
         }
         return true;
+    }
+
+    static void izlaz() {
+        System.out.println("Zatvaram bazu");
+        if (db != null) db.close();
     }
 }
