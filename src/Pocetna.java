@@ -91,6 +91,18 @@ public class Pocetna extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    public void extPrikazInfo(String poruka) {
+        taText.append(poruka + "\n");
+    }
+    
+    public void extKrajSync() {
+        btnSinhronizuj.setEnabled(true);
+        taText.append("Kraj sinhronizacije!\n");
+        lblStatus.setForeground(Color.blue);
+        lblStatus.setText("Sinhronizacija završena!");
+    }
+    
+    
     private void btnSinhronizujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSinhronizujActionPerformed
         btnSinhronizuj.setEnabled(false);
         taText.setText("Počinje sinhrnizacija...\n");
@@ -103,13 +115,13 @@ public class Pocetna extends javax.swing.JFrame {
         //this.repaint();
         //this.validate();
         //this.revalidate();
-        JOptionPane.showMessageDialog(null, "Sinhronizacija započeta!", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
+        //JOptionPane.showMessageDialog(null, "Sinhronizacija započeta!", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
 
-        MsAccessDatabaseConnectionInJava8.sinhronizuj();
-        btnSinhronizuj.setEnabled(true);
-        taText.append("Kraj sinhronizacije!\n");
-        lblStatus.setForeground(Color.blue);
-        lblStatus.setText("Sinhronizacija završena!");
+        MsAccessDatabaseConnectionInJava8 accbaza = new MsAccessDatabaseConnectionInJava8();
+        accbaza.setPocetna(this);
+        Thread tr = new Thread(accbaza);
+        tr.start();
+        
 
     }//GEN-LAST:event_btnSinhronizujActionPerformed
 
