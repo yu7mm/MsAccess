@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.text.DefaultCaret;
 
 /**
  *
@@ -122,8 +123,6 @@ public class Pocetna extends javax.swing.JFrame {
         accbaza.setPocetna(this);
         Thread tr = new Thread(accbaza);
         tr.start();
-        
-
     }//GEN-LAST:event_btnSinhronizujActionPerformed
 
 
@@ -173,7 +172,8 @@ public class Pocetna extends javax.swing.JFrame {
         p.lblStatus.setForeground(new java.awt.Color(0, 195, 0));
         p.lblStatus.setText("Baza učitana!");
         //JOptionPane.showMessageDialog(null, "Baza učitana", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
-
+        DefaultCaret caret = (DefaultCaret)p.taText.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
     }
 
 
