@@ -56,7 +56,7 @@ public class MsAccessDatabaseConnectionInJava8 {
             brojac++;
             String tabelastanova = s[4];
             System.out.println("\nZGRADA " + brojac + ": " + s[2]);
-            System.out.println();
+            //System.out.println();
             String kolone = "id, vlsifra, pib, zgrada, vlime, vlprez, vlfirma, brstana, tip, clanovakojiplacaju, povezano, datum";
             upit = "SELECT " + kolone + " FROM " + tabelastanova + " WHERE (synced=false) AND (skriveno=false) ORDER BY id ASC";
             ArrayList<String[]> stanovi = db.getArr(upit);
@@ -197,12 +197,12 @@ public class MsAccessDatabaseConnectionInJava8 {
 
     private static boolean salji_stanovi(ArrayList<String[]> stanovi) {
         String id, tt, a, slog;
-        String slogA;
         boolean uspelo;
         a = "', '";
 
         uspelo = true;
         System.out.println("Za ubacivanje iz tabele stanova: " + stanovi.size());
+        StringBuilder sb = new StringBuilder();
         for (String[] s : stanovi) {
             /*
             if (Sinhronizacija.odustani) then break;
@@ -224,15 +224,16 @@ public class MsAccessDatabaseConnectionInJava8 {
             slog = "(sourceid, sifrastana, pib, zgrada, ime, prezime, firma, brstana, tip, brstanara, povezano, datum) " + slog;
             slog = "INSERT INTO `bitsoft_rs_db_5`.`stanovi` " + slog;
 
-            System.out.println(slog);
+            //System.out.println(slog);
+            sb.append(slog).append(";\n");
 
-            //slogA = Utf8Encode(slog);
             //uspelo = ubaci(slog, tabela);
             if (uspelo) {
                 // Markirati slog u bazi kao Synced!
                 //if (not markiraj_synced(tabela, id)) then showMessage('Slog sa id=' + id + ' je sinhronizovan ali nije obeležen u tabeli pa će doći do dupliranja!');
             }
         }
+        // Ovde pokušati ubaciti sve slogove u bazu, iz sb-a
         return uspelo;
     }
 
@@ -245,6 +246,7 @@ public class MsAccessDatabaseConnectionInJava8 {
         Date datum;
 
         a = "', '";
+        StringBuilder sb = new StringBuilder();
         for (String[] s : banka) {
             tt = (s[10] != null) ? s[10] : "0";
             t2 = (s[1] != null) ? s[1] : "0";
@@ -268,6 +270,7 @@ public class MsAccessDatabaseConnectionInJava8 {
             slog = "INSERT INTO `bitsoft_rs_db_5`.`finansije` " + slog;
 
             //System.out.println(slog);
+            sb.append(slog).append(";\n");
             /*
             slogA := Utf8Encode(slog);
             uspelo := true;
@@ -324,6 +327,7 @@ public class MsAccessDatabaseConnectionInJava8 {
                 sl = slogova - ((prolaza - 1) * maxSlogova);
             }
             sviSlogovi = "";
+            StringBuilder sb = new StringBuilder();
             //MyText = TStringlist.create;
             //sqlcli.StartTransaction();
             for (int i = 1; i <= sl; i++) {
@@ -385,12 +389,9 @@ public class MsAccessDatabaseConnectionInJava8 {
                 slog = " usluga, sumazg, suma, fiksni, merazg, subvenc, mera, kolicina, kolicinazg, cenapojed, preplata, stanjeracuna, brclanova, mesto, qrlabel25, qrlabel81, qrlabel16, uplzaduz) " + slog;
                 slog = " (sourceid, racunbr, datum, rok, datumusluge, godina, mesec, zgrada, sifrastana, uplatilac, " + slog;
                 slog = "INSERT INTO `bitsoft_rs_db_5`.`finansije` " + slog;
-                //slogA = Utf8Encode(slog);
 
-                //sqlcli.ExecuteDirect(slogA);
-                sviSlogovi += slog + ";\n" ;
-                //sviSlogovi := slogA + '; '#13#10' ' ;
-                //MyText.Add(slogA + '; '#13#10' ');
+                //sqlcli.ExecuteDirect(slog);
+                sb.append(slog).append(";\n");
                 zaMarkiranje[i] = Integer.parseInt(zaduzenja.get(p)[0]);
                 //uspelo := ubaci(slog, tabela);
                 /*
@@ -405,7 +406,7 @@ public class MsAccessDatabaseConnectionInJava8 {
                  */
                 
             }  // Zavrsena izrada slozenog upita
-            //System.out.println(sviSlogovi);
+            //System.out.println(sb.toString());
             
             // Ovde poslati ceo paket za memorisanje u bazu
             //ShowMessage('Slog za slanje u bazu: u2=' + u2 + ', u3=' + u3 + ' '#13#10' ' + sviSlogovi + ' '#13#10' '); 
