@@ -10,12 +10,39 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class MsAccessDatabaseConnectionInJava8 {
+    
+    private static final Settings sett = new Settings();
+    private static final DbBrokerLocal db = new DbBrokerLocal();
 
-    public static void main(String[] args) {
-        Settings sett = new Settings();
-        DbBrokerLocal db = new DbBrokerLocal();
+    public static void init() {
+        //Settings sett = new Settings();
+        //DbBrokerLocal db = new DbBrokerLocal();
         db.conn();
-        
+    }
+    
+    
+    public static String prikaziZgrade() {
+        String upit = "SELECT id, br, adresa, pib, tabelastanova, tabelabanka, tabelazaduzenja "
+                + "FROM zgrade "
+                + "WHERE brisano = false AND skriveno = false "
+                + "ORDER BY adresa";
+        ArrayList<String[]> rez = db.getArr(upit);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("R.br.\tID\tBr\tAdresa\t\tPIB\n");
+        sb.append("======\t==\t====\t========================\t===========\n");
+        int brojac = 0;
+        for (String[] s : rez) {
+            brojac++;
+            String adresa = srediAdresu(s[2]);
+            sb.append(brojac).append("\t").append(s[0]).append("\t").append(s[1]).append("\t").append(adresa).append("\t").append(s[3]).append("\n");
+        }
+        sb.append("\nPročitano redova: ").append(brojac).append("\n");
+        System.out.println("\nPročitano redova: " + brojac);
+        return sb.toString();
+    }
+    
+    public static void sinhronizuj() {
         String upit = "SELECT id, br, adresa, pib, tabelastanova, tabelabanka, tabelazaduzenja "
                 + "FROM zgrade "
                 + "WHERE brisano = false AND skriveno = false "
@@ -62,9 +89,7 @@ public class MsAccessDatabaseConnectionInJava8 {
             upit = "SELECT " + kolone + " FROM " + tabelazaduzenja + " WHERE synced=false AND brisano=false ORDER BY id";
             ArrayList<String[]> zaduzenja = db.getArr(upit);
             salji_zaduzenja(zaduzenja);
-
         }
-
         //ispisZaduzenja(db, 37);
         db.close();
     }
