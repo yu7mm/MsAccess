@@ -22,6 +22,15 @@ public class DbBrokerRemote {
     private String user;
     private String pass;
     private Connection conn;
+    
+    public boolean isConnected() {
+        try {
+            return (conn != null && !conn.isClosed());
+        } catch (SQLException ex) {
+            Logger.getLogger(DbBrokerRemote.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
 
     public DbBrokerRemote() {
         //this.address = "localhost:3306/" +Settings.glavnaBaza+ "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true";
