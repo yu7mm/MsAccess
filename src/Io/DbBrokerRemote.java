@@ -1,4 +1,3 @@
-
 package Io;
 
 import Logika.Settings;
@@ -33,7 +32,7 @@ public class DbBrokerRemote {
         } else {
             this.address = "hamcontest.rs:3306/" + Settings.glavnaBaza + "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true";
         }
-        */
+         */
         //this.address="localhost:3306/" +Settings.glavnaBaza1+ "?useUnicode=true&characterEncoding=UTF-8";
         //this.address="localhost:3306/" +Settings.glavnaBaza1+ "?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false";
         this.user = Settings.dbUserRemote;
@@ -48,29 +47,37 @@ public class DbBrokerRemote {
     }
 
     public boolean conn() {
-        try {
-            //Class.forName("com.mysql.jdbc.Driver").newInstance();
-            Class.forName("com.mysql.cj.jdbc.Driver");
+        if (conn == null) {
+            try {
+                //Class.forName("com.mysql.jdbc.Driver").newInstance();
+                Class.forName("com.mysql.cj.jdbc.Driver");
 
-            //String jdbc = "jdbc:mysql://localhost/unicode?user=unicode&password=mypass123";
-            // String jdbcutf8 = "&useUnicode=true&characterEncoding=UTF-8";
-            // conn = DriverManager.getConnection(jdbc+jdbcutf8);
-            //address = "localhost:3306/edibot?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false";
-            //if (Settings.debug) System.out.println("<DbBroker> Konektujem se na bazu na adresi: " + address + ", user: " + user + ", pass: " + pass);
-            conn = DriverManager.getConnection("jdbc:mysql://" + address, user, pass);
-            conn.setAutoCommit(false);
-            return true;
-        } catch (Exception e) {
-            System.out.println(e);
-            return false;
+                //String jdbc = "jdbc:mysql://localhost/unicode?user=unicode&password=mypass123";
+                // String jdbcutf8 = "&useUnicode=true&characterEncoding=UTF-8";
+                // conn = DriverManager.getConnection(jdbc+jdbcutf8);
+                //address = "localhost:3306/edibot?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false";
+                if (Settings.debug) {
+                    System.out.println("<DbBroker> Konektujem se na bazu na adresi: " + address + ", user: " + user + ", pass: " + pass);
+                }
+                conn = DriverManager.getConnection("jdbc:mysql://" + address, user, pass);
+                conn.setAutoCommit(false);
+                return true;
+            } catch (ClassNotFoundException | SQLException e) {
+                System.out.println(e);
+                return false;
+            }
         }
+        return true;
     }
 
     public void close() {
         try {
-            conn.commit();
-            conn.close();
-        } catch (Exception e) {
+            if (conn != null && !conn.isClosed()) {
+                conn.commit();
+                conn.close();
+                conn = null;
+            }
+        } catch (SQLException e) {
             System.out.println(e);
         }
     }
@@ -112,13 +119,13 @@ public class DbBrokerRemote {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(query);
             //ResultSetMetaData rsMdata = rs.getMetaData();
-            ArrayList<String> resultList = new ArrayList<String>();
+            ArrayList<String> resultList = new ArrayList<>();
             while (rs.next()) {
                 resultList.add(rs.getString(1));
             }
             return resultList;
         } catch (SQLException ex) {
-            ArrayList<String> r = new ArrayList<String>();
+            ArrayList<String> r = new ArrayList<>();
             r.add("");
             return r;
         }
@@ -131,7 +138,7 @@ public class DbBrokerRemote {
             ResultSet rs = st.executeQuery(query);
             ResultSetMetaData rsMdata = rs.getMetaData();
             int colNo = rsMdata.getColumnCount();
-            ArrayList<String[]> resultList = new ArrayList<String[]>();
+            ArrayList<String[]> resultList = new ArrayList<>();
             // System.out.println("Upit iz klase DbBrokerRemote: " + query);
             while (rs.next()) {
                 String[] rw = new String[colNo];
@@ -143,7 +150,7 @@ public class DbBrokerRemote {
             }
             return resultList;
         } catch (SQLException ex) {
-            ArrayList<String[]> r = new ArrayList<String[]>();
+            ArrayList<String[]> r = new ArrayList<>();
             String[] s = new String[1];
             s[0] = ex.getMessage();
             System.err.println("<DbBroker> Greska kod getArr: " + s[0] + ", \n Upit: " + query);
@@ -151,13 +158,14 @@ public class DbBrokerRemote {
             return r;
         }
     }
-    
-    
+
     /**
-     * Mapira rezultat u HashMap<key, String[]> 
-     * pri čemu je key prva kolona koju upit vrati a ostali elementi smeštaju se u niz.
+     * Mapira rezultat u HashMap<key, String[]>
+     * pri čemu je key prva kolona koju upit vrati a ostali elementi smeštaju se
+     * u niz.
+     *
      * @param query
-     * @return 
+     * @return
      */
     public Map<String, String[]> getMap(String query) {
         try {
@@ -189,12 +197,13 @@ public class DbBrokerRemote {
         }
     }
 
-    
     /**
-     * Mapira rezultat u dvostruku HashMapu u formatu <key1, HashMap<key2, Strin[]>>
-     * Pri čemu je key1 prva kolona iz upita, a key2 druga. Ostale kolone prebacuju se u niz.
+     * Mapira rezultat u dvostruku HashMapu u formatu <key1,
+     * HashMap<key2, Strin[]>> Pri čemu je key1 prva kolona iz upita, a key2
+     * druga. Ostale kolone prebacuju se u niz.
+     *
      * @param query - očekivano je da vrati najmanje 3 kolone.
-     * @return 
+     * @return
      */
     public Map<String, LinkedHashMap<String, String[]>> getMap2Key(String query) {
         try {
@@ -213,11 +222,10 @@ public class DbBrokerRemote {
                 }
 
                 //System.out.println("key1: " +key1 + ", key2: " + key2 + ", loc: " + rw[1]);
-
                 if (resultList.containsKey(key1)) {
                     if (resultList.get(key1).containsKey(key2)) {
                         String key3 = key2 + "_dup1";
-                        int s=2;
+                        int s = 2;
                         while (resultList.get(key1).containsKey(key3)) {
                             key3 = key2 + "_dup" + s;
                             s++;
@@ -226,8 +234,7 @@ public class DbBrokerRemote {
                         key2 = key3;
                     }
                     resultList.get(key1).put(key2, rw);
-                }
-                else {
+                } else {
                     LinkedHashMap<String, String[]> unutra = new LinkedHashMap<>();
                     unutra.put(key2, rw);
                     resultList.put(key1, unutra);
@@ -246,7 +253,6 @@ public class DbBrokerRemote {
         }
     }
 
-    
     public String simpleQuery(String string) {
         boolean uspesno = false;
         String greska = "OK";
@@ -293,7 +299,7 @@ public class DbBrokerRemote {
     public boolean batchedQuery(ArrayList<String> batchSt) {
         conn();
         try {
-            int i=0;
+            int i = 0;
             Statement st = conn.createStatement();
             for (String s : batchSt) {
                 i++;
