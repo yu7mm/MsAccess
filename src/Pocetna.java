@@ -135,6 +135,11 @@ public class Pocetna extends javax.swing.JFrame {
         lblStatus.setText("Sinhronizacija završena!");
     }
     
+    private void prikaziMemoriju() {
+        Runtime rt = Runtime.getRuntime();
+        extPrikazInfo("Alocirano memorije: " + rt.maxMemory());
+        extPrikazInfo("Slobodno memorije: " + rt.freeMemory());
+    }
     
     private void btnSinhronizujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSinhronizujActionPerformed
         btnSinhronizuj.setEnabled(false);
@@ -159,7 +164,7 @@ public class Pocetna extends javax.swing.JFrame {
         //this.revalidate();
         //JOptionPane.showMessageDialog(null, "Sinhronizacija započeta!", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
         
-        accbaza.setPocetna(this);
+        //accbaza.setPocetna(this);
         Thread tr = new Thread(accbaza);
         tr.start();
     }//GEN-LAST:event_btnSinhronizujActionPerformed
@@ -206,13 +211,14 @@ public class Pocetna extends javax.swing.JFrame {
 
             }
         });
-        
+        p.prikaziMemoriju();
         MsAccessDatabaseConnectionInJava8.setPocetna(p);
         MsAccessDatabaseConnectionInJava8.init();
         p.btnSinhronizuj.setEnabled(true);
         p.btnZgrade.setEnabled(true);
         p.lblStatus.setForeground(new java.awt.Color(0, 195, 0));
         p.lblStatus.setText("Baza učitana!");
+        p.prikaziMemoriju();
         //JOptionPane.showMessageDialog(null, "Baza učitana", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
         DefaultCaret caret = (DefaultCaret)p.taText.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);

@@ -55,7 +55,8 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
         System.out.println("Pronađeno zgrada: " + rez.size());
         p.extPrikazInfo("Pronađeno zgrada: " + rez.size() + "\n");
         p.extPrikazInfo("Resetovanje svih synced markera");
-        resetujSinhronizaciju(rez);
+        //resetujSinhronizaciju(rez);
+        obrisiRemoteBazu();
         p.extPrikazInfo("Počinje sinhronizacija...");
         //p.extPrikazInfo("");
 
@@ -83,14 +84,14 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
             System.out.println("\nZGRADA " + brojac + ": " + s[2]);
             p.extPrikazInfo("\nZGRADA " + brojac + ": " + s[2]);
             String kolone = "id, vlsifra, pib, zgrada, vlime, vlprez, vlfirma, brstana, tip, clanovakojiplacaju, povezano, datum";
-            upit = "SELECT " + kolone + " FROM " + tabelastanova + " WHERE synced=false AND skriveno=false ORDER BY id ASC";
+            upit = "SELECT " + kolone + " FROM " + tabelastanova + " WHERE skriveno=false ORDER BY id ASC";
             ArrayList<String[]> stanovi = dbLoc.getArr(upit);
             salji_stanovi(stanovi);
             markirajCeluTabelu(tabelastanova);
 
             String tabelabanka = s[5];
             kolone = "id, sifrauplatioca, uplata, svrha, poznabr, brizvoda, datum, godina, mesec, datvreme, zgrada";
-            upit = "SELECT " + kolone + " FROM " + tabelabanka + " WHERE synced=false AND brisano=false AND uplata<>0 ORDER BY id ASC";
+            upit = "SELECT " + kolone + " FROM " + tabelabanka + " WHERE brisano=false AND uplata<>0 ORDER BY id ASC";
             ArrayList<String[]> banka = dbLoc.getArr(upit);
             salji_banka(banka);
             markirajCeluTabelu(tabelabanka);
@@ -99,7 +100,7 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
             kolone = "id, racunbr, datum, rok, datsluge, godina, mesec, zgrada, sifrastana, uplatilac, ";
             kolone += "usluga, sumazg, suma, fiksni, merazg, subvenc, mera, kolicina, kolicinazg, ";
             kolone += "cenapojed, pretplata, stanjeracuna, brclanova, mesto, QRLabel25, QRLabel81, QRLabel16 ";
-            upit = "SELECT " + kolone + " FROM " + tabelazaduzenja + " WHERE synced=false AND brisano=false ORDER BY id";
+            upit = "SELECT " + kolone + " FROM " + tabelazaduzenja + " WHERE brisano=false ORDER BY id";
             ArrayList<String[]> zaduzenja = dbLoc.getArr(upit);
             salji_zaduzenja(zaduzenja);
             markirajCeluTabelu(tabelazaduzenja);
@@ -154,10 +155,10 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
             t5 = (s[5] != null) ? s[5] : "0";
             t6 = (s[4] != null) ? s[4] : "0";
             t7 = (s[6] != null) ? s[6] : "0";  // Formatirati datum formatdatetime('yyyy-mm-dd', ADOQuery2['datum']);
-            //if (ADOQuery2['datum'] = null) then datum := StrToDate('1900-01-01') else datum := ADOQuery2['datum'];
+            //if (ADOQuery2['datum'] = null) then datum += StrToDate('1900-01-01') else datum += ADOQuery2['datum'];
             t8 = (s[7] != null) ? s[7] : "0";
             t9 = (s[8] != null) ? s[8] : "0";
-            u1 = (s[9] != null) ? s[9] : "0";  // u1 := formatdatetime('yyyy-mm-dd', ADOQuery2['datvreme']);
+            u1 = (s[9] != null) ? s[9] : "0";  // u1 += formatdatetime('yyyy-mm-dd', ADOQuery2['datvreme']);
 
             slog = " ('" + s[0] + a + t2 + a + t3;
             slog += a + t4 + a + t6 + a + t5;
@@ -185,9 +186,9 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
         for (int i = 0; i < zaduzenja.size(); i++) {
             String id = zaduzenja.get(i)[0];
             t1 = (zaduzenja.get(i)[1] != null) ? zaduzenja.get(i)[1] : "0";
-            t2 = (zaduzenja.get(i)[2] != null) ? zaduzenja.get(i)[2] : "0000-00-00";  // t2 := formatdatetime('yyyy-mm-dd', ADOQuery2['datum']);
-            t3 = (zaduzenja.get(i)[3] != null) ? zaduzenja.get(i)[3] : "0000-00-00";  // t3 := '0000-00-00' else t3 := formatdatetime('yyyy-mm-dd', ADOQuery2['rok']);
-            t4 = (zaduzenja.get(i)[4] != null) ? zaduzenja.get(i)[4] : "0000-00-00";  // t4 := '0000-00-00' else t3 := formatdatetime('yyyy-mm-dd', ADOQuery2['rok']);
+            t2 = (zaduzenja.get(i)[2] != null) ? zaduzenja.get(i)[2] : "0000-00-00";  // t2 += formatdatetime('yyyy-mm-dd', ADOQuery2['datum']);
+            t3 = (zaduzenja.get(i)[3] != null) ? zaduzenja.get(i)[3] : "0000-00-00";  // t3 += '0000-00-00' else t3 += formatdatetime('yyyy-mm-dd', ADOQuery2['rok']);
+            t4 = (zaduzenja.get(i)[4] != null) ? zaduzenja.get(i)[4] : "0000-00-00";  // t4 += '0000-00-00' else t3 += formatdatetime('yyyy-mm-dd', ADOQuery2['rok']);
             t5 = (zaduzenja.get(i)[5] != null) ? zaduzenja.get(i)[5] : "0";
             t6 = (zaduzenja.get(i)[6] != null) ? zaduzenja.get(i)[6] : "0";
             t7 = (zaduzenja.get(i)[7] != null) ? zaduzenja.get(i)[7] : "0";
@@ -245,10 +246,18 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
     public static void init() {
         //Settings sett = new Settings();
         //DbBrokerLocal dbLoc = new DbBrokerLocal();
-        //dbLoc.conn();
+        p.extPrikazInfo("Učitava se lokalna baza. Ovo će potrajati duže vreme...");
+        if (!dbLoc.conn()) {
+            String err = dbLoc.getError();
+            p.extPrikazInfo("Greška kod konekcije na lokalnu bazu:\n" + err);
+        }
+        p.extPrikazInfo("Konektujem se na udaljenu bazu");
         if (!dbRemote.conn()) {
             String err = dbRemote.getError();
             p.extPrikazInfo("Greška kod konekcije na udaljenu bazu:\n" + err);
+        }
+        else {
+            p.extPrikazInfo("Veza uspostavljena");
         }
     }
 
@@ -535,7 +544,7 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
         } else {
             sl = maxSlogova;
         }
-        // Sinhronizacija.ProgressBar2.Max := slogova+1;
+        // Sinhronizacija.ProgressBar2.Max += slogova+1;
         // Sinhronizaciju raditi u sekvencama od po 500-800 slogova od jednom
         // dakle sa ugnjezdenim petljama
         for (int j = 1; j <= prolaza; j++) {
@@ -552,15 +561,15 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
             //sqlcli.StartTransaction();
             for (int i = 1; i <= sl; i++) {
                 //if (Sinhronizacija.odustani) break;
-                //Sinhronizacija.Label2.Caption := 'Zapis ' + intToStr(i) + ' od ' + intToStr(slogova) ;
-                //Sinhronizacija.ProgressBar2.Position := i;
+                //Sinhronizacija.Label2.Caption += 'Zapis ' + intToStr(i) + ' od ' + intToStr(slogova) ;
+                //Sinhronizacija.ProgressBar2.Position += i;
                 pp++;
                 //Sinhronizacija.Repaint;
 
                 t1 = (zaduzenja.get(pp)[1] != null) ? zaduzenja.get(pp)[1] : "0";
-                t2 = (zaduzenja.get(pp)[2] != null) ? zaduzenja.get(pp)[2] : "0000-00-00";  // t2 := formatdatetime('yyyy-mm-dd', ADOQuery2['datum']);
-                t3 = (zaduzenja.get(pp)[3] != null) ? zaduzenja.get(pp)[3] : "0000-00-00";  // t3 := '0000-00-00' else t3 := formatdatetime('yyyy-mm-dd', ADOQuery2['rok']);
-                t4 = (zaduzenja.get(pp)[4] != null) ? zaduzenja.get(pp)[4] : "0000-00-00";  // t4 := '0000-00-00' else t3 := formatdatetime('yyyy-mm-dd', ADOQuery2['rok']);
+                t2 = (zaduzenja.get(pp)[2] != null) ? zaduzenja.get(pp)[2] : "0000-00-00";  // t2 += formatdatetime('yyyy-mm-dd', ADOQuery2['datum']);
+                t3 = (zaduzenja.get(pp)[3] != null) ? zaduzenja.get(pp)[3] : "0000-00-00";  // t3 += '0000-00-00' else t3 += formatdatetime('yyyy-mm-dd', ADOQuery2['rok']);
+                t4 = (zaduzenja.get(pp)[4] != null) ? zaduzenja.get(pp)[4] : "0000-00-00";  // t4 += '0000-00-00' else t3 += formatdatetime('yyyy-mm-dd', ADOQuery2['rok']);
                 t5 = (zaduzenja.get(pp)[5] != null) ? zaduzenja.get(pp)[5] : "0";
                 t6 = (zaduzenja.get(pp)[6] != null) ? zaduzenja.get(pp)[6] : "0";
                 t7 = (zaduzenja.get(pp)[7] != null) ? zaduzenja.get(pp)[7] : "0";
@@ -619,7 +628,7 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
                 redova++;
                 redovaZaduzenja++;
 
-                //uspelo := ubaci(slog, tabela);
+                //uspelo += ubaci(slog, tabela);
                 /*
               if (uspelo) then 
                 begin
@@ -643,39 +652,39 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
       Except
         MyText.SaveToFile('d:/upit_sa_greskom.txt');
       	showMessage('Greška kod kopiranja podataka iz tabele: ' + tabela + '. Pogledajte log fajl "upit_sa_greskom.txt" na D disku.');
-        uspelo := false;
+        uspelo += false;
       end;
              */
  /*
       if (uspelo) then 
         begin
           // Markirati sve slogove u tabeli kao Synced! 
-          i := 1;         
-  				prol := sl Div 80;
-  				if sl <> 80 then prol := prol + 1;
-  				if sl <  80 then s := sl else s := 80;
-          for k := 1 to prol do
+          i += 1;         
+  				prol += sl Div 80;
+  				if sl <> 80 then prol += prol + 1;
+  				if sl <  80 then s += sl else s += 80;
+          for k += 1 to prol do
           	begin
-              id1 := 'UPDATE ' + tabela + ' SET synced=true WHERE ';
-              if k = prol then s := sl - ((prol - 1) * 80);
-              for i := 1 to s do
+              id1 += 'UPDATE ' + tabela + ' SET synced=true WHERE ';
+              if k = prol then s += sl - ((prol - 1) * 80);
+              for i += 1 to s do
                 begin
                   //markiraj_synced(tabela, intToStr(zaMarkiranje[i]));
-                  if i>1 then id1 := id1 + ' OR ';
-                  id1 := id1 + 'id=' + intToStr(zaMarkiranje[i]) ;
-                  i := i + 1;
+                  if i>1 then id1 += id1 + ' OR ';
+                  id1 += id1 + 'id=' + intToStr(zaMarkiranje[i]) ;
+                  i += i + 1;
                 end;
               try
-                MyText:= TStringlist.create;
+                MyText+= TStringlist.create;
                 MyText.Add('Tabela: ' + tabela + ', Slogova: ' + intToStr(slogova));
                 MyText.Add('Upit: ' + id1);
                 MyText.Add('sl=' + intToStr(sl) + ', prol=' + intToStr(prol) +  ', k=' + intToStr(k) + ', s=' + intToStr(s) + ', i=' + intToStr(i));
                 MyText.SaveToFile('d:\sync_sa_greskom.txt');
-              	ADOQuery3.SQL.Text := id1;
+              	ADOQuery3.SQL.Text += id1;
               	if s>0 then ADOQuery3.ExecSQL; // Uslov je za slučaj da sogova ima onoliki broj koji je deljiv sa 80, onda će prolaza biti jedan više, pa u poslednjem prolazu neće biti ni jedan slog pa dolazi do greske u WHERE
               	//ShowMessage('Potrebno markirati: '#13#10'' +   ''#13#10'' + id1); 
               Except
-                MyText:= TStringlist.create;
+                MyText+= TStringlist.create;
                 MyText.Add(id1);
                 MyText.SaveToFile('d:\sync_sa_greskom.txt');
                 ShowMessage('Greska kod markiranja.'#13#10'Pogledajte log fajl "sync_sa_greskom.txt" na D disku.');
@@ -690,7 +699,7 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
         
         }
   ADOQuery2.Close;
-  salji_zaduzenja := true;//System.out.println(sb.toString());
+  salji_zaduzenja += true;//System.out.println(sb.toString());
             
             // Ovde poslati ceo paket za memorisanje u bazu
             //ShowMessage('Slog za slanje u bazu: u2=' + u2 + ', u3=' + u3 + ' '#13#10' ' + sviSlogovi + ' '#13#10' '); 
@@ -702,39 +711,39 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
       Except
         MyText.SaveToFile('d:/upit_sa_greskom.txt');
       	showMessage('Greška kod kopiranja podataka iz tabele: ' + tabela + '. Pogledajte log fajl "upit_sa_greskom.txt" na D disku.');
-        uspelo := false;
+        uspelo += false;
       end;
              */
  /*
       if (uspelo) then 
         begin
           // Markirati sve slogove u tabeli kao Synced! 
-          i := 1;         
-  				prol := sl Div 80;
-  				if sl <> 80 then prol := prol + 1;
-  				if sl <  80 then s := sl else s := 80;
-          for k := 1 to prol do
+          i += 1;         
+  				prol += sl Div 80;
+  				if sl <> 80 then prol += prol + 1;
+  				if sl <  80 then s += sl else s += 80;
+          for k += 1 to prol do
           	begin
-              id1 := 'UPDATE ' + tabela + ' SET synced=true WHERE ';
-              if k = prol then s := sl - ((prol - 1) * 80);
-              for i := 1 to s do
+              id1 += 'UPDATE ' + tabela + ' SET synced=true WHERE ';
+              if k = prol then s += sl - ((prol - 1) * 80);
+              for i += 1 to s do
                 begin
                   //markiraj_synced(tabela, intToStr(zaMarkiranje[i]));
-                  if i>1 then id1 := id1 + ' OR ';
-                  id1 := id1 + 'id=' + intToStr(zaMarkiranje[i]) ;
-                  i := i + 1;
+                  if i>1 then id1 += id1 + ' OR ';
+                  id1 += id1 + 'id=' + intToStr(zaMarkiranje[i]) ;
+                  i += i + 1;
                 end;
               try
-                MyText:= TStringlist.create;
+                MyText+= TStringlist.create;
                 MyText.Add('Tabela: ' + tabela + ', Slogova: ' + intToStr(slogova));
                 MyText.Add('Upit: ' + id1);
                 MyText.Add('sl=' + intToStr(sl) + ', prol=' + intToStr(prol) +  ', k=' + intToStr(k) + ', s=' + intToStr(s) + ', i=' + intToStr(i));
                 MyText.SaveToFile('d:\sync_sa_greskom.txt');
-              	ADOQuery3.SQL.Text := id1;
+              	ADOQuery3.SQL.Text += id1;
               	if s>0 then ADOQuery3.ExecSQL; // Uslov je za slučaj da sogova ima onoliki broj koji je deljiv sa 80, onda će prolaza biti jedan više, pa u poslednjem prolazu neće biti ni jedan slog pa dolazi do greske u WHERE
               	//ShowMessage('Potrebno markirati: '#13#10'' +   ''#13#10'' + id1); 
               Except
-                MyText:= TStringlist.create;
+                MyText+= TStringlist.create;
                 MyText.Add(id1);
                 MyText.SaveToFile('d:\sync_sa_greskom.txt');
                 ShowMessage('Greska kod markiranja.'#13#10'Pogledajte log fajl "sync_sa_greskom.txt" na D disku.');
@@ -749,7 +758,7 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
         
         }
   ADOQuery2.Close;
-  salji_zaduzenja := true;
+  salji_zaduzenja += true;
              */
         }
         return true;
@@ -774,6 +783,87 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
             uspeh = dbLoc.simpleQuery(upit);
             p.extPrikazInfo("Reset " + s[6] + ", response: " + uspeh);
         }
+    }
+
+    private String obrisiRemoteBazu() {
+        String upit = "DROP TABLE `" + Settings.bazaRemote + "`.`stanovi`";
+        String rez1 = dbRemote.simpleQuery(upit);
+        upit = "DROP TABLE `" + Settings.bazaRemote + "`.`finansije`";
+        String rez2 = dbRemote.simpleQuery(upit);
+        rez1 = praviTabeluStanovi();
+        rez2 = praviTabeluFinansije();
+        if (rez1.equals("OK") && rez2.equals("OK")) return "OK";
+        else return rez1 + ", " + rez2;
+    }
+
+    private String praviTabeluStanovi() {
+       String upit;
+       upit = "CREATE TABLE IF NOT EXISTS `" + Settings.bazaRemote + "`.`stanovi`";
+       upit += " (`id` INT(11) NOT NULL AUTO_INCREMENT, " ;
+       upit += " `sourceid` INT(11) NOT NULL DEFAULT '0', " ;
+       upit += " `sifrastana` VARCHAR(16) NOT NULL DEFAULT '-', " ;
+       upit += " `zgrada` VARCHAR(70) NOT NULL DEFAULT '-', " ;
+       upit += " `stanar` VARCHAR(50) NOT NULL DEFAULT '-', " ;
+       upit += " `ime` VARCHAR(50) NOT NULL DEFAULT '-', " ;
+       upit += " `prezime` VARCHAR(50) NOT NULL DEFAULT '-', " ;
+       upit += " `firma` VARCHAR(80) NOT NULL DEFAULT '-', " ;
+       upit += " `pib` VARCHAR(10) NOT NULL DEFAULT '-', " ;
+       upit += " `adresa` VARCHAR(80) NOT NULL DEFAULT '-', " ;
+       upit += " `brstana` VARCHAR(8) NOT NULL DEFAULT '-', " ;
+       upit += " `tip` VARCHAR(8) NOT NULL DEFAULT '-', " ;
+       upit += " `brstanara` INT(3) NOT NULL DEFAULT '0', " ;
+       upit += " `povezano` VARCHAR(120) NOT NULL DEFAULT '-', " ;
+       upit += " `datum` DATE NOT NULL DEFAULT '1900-01-01', " ;
+       upit += " `datpristupa` DATE NOT NULL DEFAULT '0000-00-00', " ;
+       upit += " `username` VARCHAR(16) NOT NULL DEFAULT '-', " ;
+       upit += " `password` VARCHAR(16) NOT NULL DEFAULT '-', " ;
+       upit += " PRIMARY KEY (`id`)) " ;
+       upit += " ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;" ;
+       return dbRemote.simpleQuery(upit);
+    }
+
+    private String praviTabeluFinansije() {
+        String upit;
+       upit = "CREATE TABLE IF NOT EXISTS `" + Settings.bazaRemote + "`.`finansije`";
+       upit += " (`id` INT(11) NOT NULL AUTO_INCREMENT, " ;
+       upit += " `sourceid` INT(11) NOT NULL DEFAULT '0', " ;
+       upit += " `sifrastana` VARCHAR(16) NOT NULL DEFAULT '-', " ;
+       upit += " `racunbr` VARCHAR(16) NOT NULL DEFAULT '-', " ;
+       upit += " `rok` VARCHAR(11) NOT NULL DEFAULT '-', " ;
+       upit += " `datumusluge` DATE NOT NULL DEFAULT '0000-00-00', " ;
+       upit += " `datum`  DATE NOT NULL DEFAULT '0000-00-00', " ;
+       upit += " `godina` VARCHAR(5) NOT NULL DEFAULT '-', " ;
+       upit += " `mesec` VARCHAR(10) NOT NULL DEFAULT '-', " ;
+       upit += " `zgrada` VARCHAR(70) NOT NULL DEFAULT '-', " ;
+       upit += " `uplatilac` VARCHAR(90) NOT NULL DEFAULT '-', " ;
+       upit += " `usluga` VARCHAR(30) NOT NULL DEFAULT '-', " ;
+       upit += " `suma` DOUBLE NOT NULL DEFAULT '0', " ;
+       upit += " `sumazg` DOUBLE NOT NULL DEFAULT '0', " ;
+       upit += " `cenapojed` DOUBLE NOT NULL DEFAULT '0', " ;
+       upit += " `fiksni` DOUBLE NOT NULL DEFAULT '0', " ;
+       upit += " `kolicina` DOUBLE NOT NULL DEFAULT '0', " ;
+       upit += " `kolicinazg` DOUBLE NOT NULL DEFAULT '0', " ;
+       upit += " `preplata` DOUBLE NOT NULL DEFAULT '0', " ;
+       upit += " `stanjeracuna` DOUBLE NOT NULL DEFAULT '0', " ;
+       upit += " `subvenc` DOUBLE NOT NULL DEFAULT '0', " ;
+       upit += " `brclanova` INT(2) NOT NULL DEFAULT '0', " ;
+       upit += " `merazg` VARCHAR(5) NOT NULL DEFAULT '-', " ;
+       upit += " `mera` VARCHAR(5) NOT NULL DEFAULT '-', " ;
+       upit += " `mesto` VARCHAR(25) NOT NULL DEFAULT '-', " ;
+       upit += " `qrlabel25` VARCHAR(80) NOT NULL DEFAULT '-', " ;
+       upit += " `qrlabel81` VARCHAR(80) NOT NULL DEFAULT '-', " ;
+       upit += " `qrlabel16` VARCHAR(80) NOT NULL DEFAULT '-', " ;
+       upit += " `brizvoda` INT(5) NOT NULL DEFAULT '0', " ;
+       upit += " `uplata` DOUBLE NOT NULL DEFAULT '0', " ;
+       upit += " `svrha` VARCHAR(80) NOT NULL DEFAULT '-', " ;
+       upit += " `poznabr` VARCHAR(20) NOT NULL DEFAULT '-', " ;             
+       upit += " `uplzaduz` BOOLEAN NOT NULL DEFAULT '0', " ;
+       upit += " `datumsync` DATE NOT NULL DEFAULT '0000-00-00', " ;
+       upit += " PRIMARY KEY (`id`), " ;
+       upit += " KEY `sifrastana` (`sifrastana`), " ;
+       upit += " KEY `zgrada` (`zgrada`)) " ;
+       upit += " ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;" ;
+       return dbRemote.simpleQuery(upit);
     }
 
 

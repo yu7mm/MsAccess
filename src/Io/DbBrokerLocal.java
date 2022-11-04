@@ -35,6 +35,12 @@ public class DbBrokerLocal {
         this.pass = pass;
     }
 
+    
+    public String getError() {
+        String err = greska;
+        greska = "";
+        return err;
+    }
 
     public boolean conn() {
         try {
@@ -46,6 +52,7 @@ public class DbBrokerLocal {
             return true;
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Problem kod učitavanja ili registrovanja MS Access JDBC drivera\n" + e);
+            greska = e.toString();
             return false;
         }
     }
