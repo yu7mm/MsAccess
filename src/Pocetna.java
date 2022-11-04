@@ -1,8 +1,5 @@
 
 import java.awt.Color;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.text.DefaultCaret;
 
 /**
@@ -24,6 +21,9 @@ public class Pocetna extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         taText = new javax.swing.JTextArea();
         btnZgrade = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        lblRemoteStatus = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sinhronizacija baze podataka");
@@ -59,6 +59,16 @@ public class Pocetna extends javax.swing.JFrame {
             }
         });
 
+        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jTextField1.setText("600");
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setText("Max. broj redova u upitu");
+
+        lblRemoteStatus.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lblRemoteStatus.setForeground(new java.awt.Color(255, 0, 0));
+        lblRemoteStatus.setText(" ");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -71,8 +81,14 @@ public class Pocetna extends javax.swing.JFrame {
                         .addComponent(btnSinhronizuj, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(92, 92, 92)
                         .addComponent(btnZgrade, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(61, 61, 61)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblRemoteStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(26, 26, 26))
         );
         layout.setVerticalGroup(
@@ -80,12 +96,21 @@ public class Pocetna extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(lblStatus)
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSinhronizuj, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnZgrade, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 379, Short.MAX_VALUE)
+                .addGap(8, 8, 8)
+                .addComponent(lblRemoteStatus)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel1)
+                        .addGap(30, 30, 30))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnSinhronizuj, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnZgrade, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(40, 40, 40)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
                 .addGap(27, 27, 27))
         );
 
@@ -97,9 +122,15 @@ public class Pocetna extends javax.swing.JFrame {
         taText.append(poruka + "\n");
     }
     
+    public void extRemoteConn(String poruka, java.awt.Color boja) {
+        lblRemoteStatus.setText(poruka);
+        lblRemoteStatus.setForeground(boja);
+    }
+    
     public void extKrajSync() {
         btnSinhronizuj.setEnabled(true);
-        taText.append("Kraj sinhronizacije!\n");
+        btnZgrade.setEnabled(true);
+        taText.append("\nKRAJ SINHRONIZACIJE!\n");
         lblStatus.setForeground(Color.blue);
         lblStatus.setText("Sinhronizacija završena!");
     }
@@ -107,9 +138,18 @@ public class Pocetna extends javax.swing.JFrame {
     
     private void btnSinhronizujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSinhronizujActionPerformed
         btnSinhronizuj.setEnabled(false);
+        btnZgrade.setEnabled(false);
         taText.setText("Počinje sinhrnizacija...\n");
         lblStatus.setForeground(Color.red);
         lblStatus.setText("Započinjem sinhronizaciju...");
+        MsAccessDatabaseConnectionInJava8 accbaza = new MsAccessDatabaseConnectionInJava8();
+        
+        try {
+            accbaza.maxRedova = Integer.parseInt(jTextField1.getText());
+        }
+        catch (NumberFormatException ex) {
+            
+        }
 
         //this.invalidate();
         //this.validate();
@@ -118,8 +158,7 @@ public class Pocetna extends javax.swing.JFrame {
         //this.validate();
         //this.revalidate();
         //JOptionPane.showMessageDialog(null, "Sinhronizacija započeta!", "Obaveštenje", JOptionPane.INFORMATION_MESSAGE);
-
-        MsAccessDatabaseConnectionInJava8 accbaza = new MsAccessDatabaseConnectionInJava8();
+        
         accbaza.setPocetna(this);
         Thread tr = new Thread(accbaza);
         tr.start();
@@ -135,6 +174,7 @@ public class Pocetna extends javax.swing.JFrame {
 
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        taText.append("Zatvaranje baza podataka...");
         MsAccessDatabaseConnectionInJava8.izlaz();
     }//GEN-LAST:event_formWindowClosing
 
@@ -180,7 +220,10 @@ public class Pocetna extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSinhronizuj;
     private javax.swing.JButton btnZgrade;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lblRemoteStatus;
     private javax.swing.JLabel lblStatus;
     private javax.swing.JTextArea taText;
     // End of variables declaration//GEN-END:variables
