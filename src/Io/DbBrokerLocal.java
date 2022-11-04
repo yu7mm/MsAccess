@@ -225,7 +225,7 @@ public class DbBrokerLocal {
             LinkedHashMap<String, String[]> r2 = new LinkedHashMap<>();
             String[] s = new String[1];
             s[0] = ex.getMessage();
-            System.err.println("<DbBroker> Greska kod getMap2Key: " + s[0] + ", \n Upit: " + query);
+            System.err.println("<DbBrokerLocal> Greska kod getMap2Key: " + s[0] + ", \n Upit: " + query);
             r2.put("GRESKA", s);
             r1.put("GRESKA", r2);
             return r1;

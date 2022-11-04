@@ -23,7 +23,7 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
     private static final Settings sett = new Settings();  // Ne dirati ovo!
     private static final DbBrokerLocal dbLoc = new DbBrokerLocal();
     private static final DbBrokerRemote dbRemote = new DbBrokerRemote();
-    private Pocetna p;
+    private static Pocetna p;
     private final StringBuilder upitiStanovi = new StringBuilder();
     private final StringBuilder upitiBanka = new StringBuilder();
     private final StringBuilder upitiZaduzenja = new StringBuilder();
@@ -245,12 +245,15 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
     public static void init() {
         //Settings sett = new Settings();
         //DbBrokerLocal dbLoc = new DbBrokerLocal();
-        dbLoc.conn();
-        dbRemote.conn();
+        //dbLoc.conn();
+        if (!dbRemote.conn()) {
+            String err = dbRemote.getError();
+            p.extPrikazInfo("Greška kod konekcije na udaljenu bazu:\n" + err);
+        }
     }
 
-    public void setPocetna(Pocetna po) {
-        this.p = po;
+    public static void setPocetna(Pocetna po) {
+        p = po;
     }
 
     public static String prikaziZgrade() {

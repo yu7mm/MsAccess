@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 public class DbBrokerRemote {
 
-    public String greska = "";
+    private String greska;
     private String address;
     private String user;
     private String pass;
@@ -66,13 +66,15 @@ public class DbBrokerRemote {
                 // conn = DriverManager.getConnection(jdbc+jdbcutf8);
                 //address = "localhost:3306/edibot?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false";
                 if (Settings.debug) {
-                    System.out.println("<DbBroker> Konektujem se na bazu na adresi: " + address + ", user: " + user + ", pass: " + pass);
+                    System.out.println("<DbBrokerRemote> Konektujem se na bazu na adresi: " + address + ", user: " + user + ", pass: " + pass);
                 }
+                
                 conn = DriverManager.getConnection("jdbc:mysql://" + address, user, pass);
                 conn.setAutoCommit(false);
                 return true;
             } catch (ClassNotFoundException | SQLException e) {
                 System.out.println(e);
+                this.greska = e.toString();
                 return false;
             }
         }
@@ -331,6 +333,12 @@ public class DbBrokerRemote {
             close();
         }
         return false;
+    }
+    
+    public String getError() {
+        String err = this.greska;
+        this.greska = "";
+        return err;
     }
 
 }

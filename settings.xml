@@ -1,5 +1,4 @@
 
-
 <DEVELOPING>true</DEVELOPING>
 <DEBUG>true</DEBUG>
 
@@ -10,15 +9,23 @@
 <BAZALOCALURL>D:/Java/bazazgrada.mdb</BAZALOCALURL>
 
 
+<BAZAREMOTE>edibot</BAZAREMOTE>
+<BAZAREMOTEUSER>root</BAZAREMOTEUSER>
+<BAZAREMOTEPASS>edi</BAZAREMOTEPASS>
+<BAZAREMOTEURL>hamcontest.rs:3306/edibot?useUnicode=true&characterEncoding=UTF-8&useSSL=false&rewriteBatchedStatements=true</BAZAREMOTEURL>
+
+
+
+<BAZAREMOTEUSER>root</BAZAREMOTEUSER>
+<BAZAREMOTEPASS>root</BAZAREMOTEPASS>
+<BAZAREMOTEURL>localhost:3306/bitsoft_rs_db_5?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true</BAZAREMOTEURL>
 
 <BAZAREMOTE>bitsoft_rs_db_5</BAZAREMOTE>
 <BAZAREMOTEUSER>greenclea@b53409</BAZAREMOTEUSER>
 <BAZAREMOTEPASS>rhv,+7C>P*N.>A8></BAZAREMOTEPASS>
-<BAZAREMOTEURL>mysql685.loopia.se:3306/bitsoft_rs_db_5?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true</BAZAREMOTEURL>
+<BAZAREMOTEURL>mysql685.loopia.se:3306/bitsoft_rs_db_5?&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true</BAZAREMOTEURL>
+<BAZAREMOTEURL>mysql685.loopia.se:3306/bitsoft_rs_db_5</BAZAREMOTEURL>
 
-<BAZAREMOTEUSER>root</BAZAREMOTEUSER>
-<BAZAREMOTEPASS>korisnik</BAZAREMOTEPASS>
-<BAZAREMOTEURL>localhost:3306/bitsoft_rs_db_5?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true</BAZAREMOTEURL>
 
 
 <ADVOPT>true</ADVOPT>

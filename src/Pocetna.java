@@ -206,6 +206,8 @@ public class Pocetna extends javax.swing.JFrame {
 
             }
         });
+        
+        MsAccessDatabaseConnectionInJava8.setPocetna(p);
         MsAccessDatabaseConnectionInJava8.init();
         p.btnSinhronizuj.setEnabled(true);
         p.btnZgrade.setEnabled(true);

@@ -82,30 +82,30 @@ public final class Settings {
                     temp = line.toUpperCase().replace("<DEBUG>", "").replace("</DEBUG>", "");
                     debug = (temp.contains("TRUE") || temp.contains("D") || temp.contains("Y") || temp.contains("1"));
                 }
-                if (line.toUpperCase().contains("<BAZALOCAL>")) {
+                if (line.contains("<BAZALOCAL>")) {
                     temp = line.replace("<BAZALOCAL>", "").replace("</BAZALOCAL>", "");
                     bazaLoc = temp;
                     System.out.println("Učitana glavna baza local: " + temp);
                 }
-                if (line.toUpperCase().contains("<BAZAREMOTE>")) {
+                if (line.contains("<BAZAREMOTE>")) {
                     temp = line.replace("<BAZAREMOTE>", "").replace("</BAZAREMOTE>", "");
                     bazaRemote = temp;
                     System.out.println("Učitana glavna baza remote: " + temp);
                 }
-                if (line.toUpperCase().contains("BAZALOCALPASS")) {
-                    temp = line.toUpperCase().replace("<BAZALOCALPASS>", "").replace("</BAZALOCALPASS>", "");
+                if (line.contains("BAZALOCALPASS")) {
+                    temp = line.replace("<BAZALOCALPASS>", "").replace("</BAZALOCALPASS>", "");
                     dbPassLoc = temp;
                 }
-                if (line.toUpperCase().contains("BAZAREMOTEPASS")) {
-                    temp = line.toUpperCase().replace("<BAZAREMOTEPASS>", "").replace("</BAZAREMOTEPASS>", "");
+                if (line.contains("BAZAREMOTEPASS")) {
+                    temp = line.replace("<BAZAREMOTEPASS>", "").replace("</BAZAREMOTEPASS>", "");
                     dbPassRemote = temp;
                 }
-                if (line.toUpperCase().contains("BAZALOCALUSER")) {
-                    temp = line.toUpperCase().replace("<BAZALOCALUSER>", "").replace("</BAZALOCALUSER>", "");
+                if (line.contains("BAZALOCALUSER")) {
+                    temp = line.replace("<BAZALOCALUSER>", "").replace("</BAZALOCALUSER>", "");
                     dbUserLoc = temp;
                 }
-                if (line.toUpperCase().contains("BAZAREMOTEUSER")) {
-                    temp = line.toUpperCase().replace("<BAZAREMOTEUSER>", "").replace("</BAZAREMOTEUSER>", "");
+                if (line.contains("BAZAREMOTEUSER")) {
+                    temp = line.replace("<BAZAREMOTEUSER>", "").replace("</BAZAREMOTEUSER>", "");
                     dbUserRemote = temp;
                 }
                 if (line.contains("BAZALOCALURL")) {
