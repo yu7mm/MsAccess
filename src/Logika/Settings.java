@@ -94,22 +94,18 @@ public final class Settings {
                 }
                 if (line.toUpperCase().contains("BAZALOCALPASS")) {
                     temp = line.toUpperCase().replace("<BAZALOCALPASS>", "").replace("</BAZALOCALPASS>", "");
-                    temp = temp.toLowerCase();
                     dbPassLoc = temp;
                 }
                 if (line.toUpperCase().contains("BAZAREMOTEPASS")) {
                     temp = line.toUpperCase().replace("<BAZAREMOTEPASS>", "").replace("</BAZAREMOTEPASS>", "");
-                    temp = temp.toLowerCase();
                     dbPassRemote = temp;
                 }
                 if (line.toUpperCase().contains("BAZALOCALUSER")) {
                     temp = line.toUpperCase().replace("<BAZALOCALUSER>", "").replace("</BAZALOCALUSER>", "");
-                    temp = temp.toLowerCase();
                     dbUserLoc = temp;
                 }
                 if (line.toUpperCase().contains("BAZAREMOTEUSER")) {
                     temp = line.toUpperCase().replace("<BAZAREMOTEUSER>", "").replace("</BAZAREMOTEUSER>", "");
-                    temp = temp.toLowerCase();
                     dbUserRemote = temp;
                 }
                 if (line.contains("BAZALOCALURL")) {
