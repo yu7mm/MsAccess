@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
@@ -87,14 +88,14 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
             upit = "SELECT " + kolone + " FROM " + tabelastanova + " WHERE skriveno=false ORDER BY id ASC";
             ArrayList<String[]> stanovi = dbLoc.getArr(upit);
             salji_stanovi(stanovi);
-            markirajCeluTabelu(tabelastanova);
+            //markirajCeluTabelu(tabelastanova);
 
             String tabelabanka = s[5];
             kolone = "id, sifrauplatioca, uplata, svrha, poznabr, brizvoda, datum, godina, mesec, datvreme, zgrada";
             upit = "SELECT " + kolone + " FROM " + tabelabanka + " WHERE brisano=false AND uplata<>0 ORDER BY id ASC";
             ArrayList<String[]> banka = dbLoc.getArr(upit);
             salji_banka(banka);
-            markirajCeluTabelu(tabelabanka);
+            //markirajCeluTabelu(tabelabanka);
 
             String tabelazaduzenja = s[6];
             kolone = "id, racunbr, datum, rok, datsluge, godina, mesec, zgrada, sifrastana, uplatilac, ";
@@ -103,7 +104,7 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
             upit = "SELECT " + kolone + " FROM " + tabelazaduzenja + " WHERE brisano=false ORDER BY id";
             ArrayList<String[]> zaduzenja = dbLoc.getArr(upit);
             salji_zaduzenja(zaduzenja);
-            markirajCeluTabelu(tabelazaduzenja);
+            //markirajCeluTabelu(tabelazaduzenja);
         }
         System.out.println("Sinhronizacija završena");
         //ispisZaduzenja(37);
@@ -154,7 +155,7 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
             t4 = (s[3] != null) ? s[3] : "0";
             t5 = (s[5] != null) ? s[5] : "0";
             t6 = (s[4] != null) ? s[4] : "0";
-            t7 = (s[6] != null) ? s[6] : "0";  // Formatirati datum formatdatetime('yyyy-mm-dd', ADOQuery2['datum']);
+            t7 = (s[6] != null) ? s[6] : "0000-00-00";  // Formatirati datum formatdatetime('yyyy-mm-dd', ADOQuery2['datum']);
             //if (ADOQuery2['datum'] = null) then datum += StrToDate('1900-01-01') else datum += ADOQuery2['datum'];
             t8 = (s[7] != null) ? s[7] : "0";
             t9 = (s[8] != null) ? s[8] : "0";
@@ -186,9 +187,9 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
         for (int i = 0; i < zaduzenja.size(); i++) {
             String id = zaduzenja.get(i)[0];
             t1 = (zaduzenja.get(i)[1] != null) ? zaduzenja.get(i)[1] : "0";
-            t2 = (zaduzenja.get(i)[2] != null) ? zaduzenja.get(i)[2] : "0000-00-00";  // t2 += formatdatetime('yyyy-mm-dd', ADOQuery2['datum']);
-            t3 = (zaduzenja.get(i)[3] != null) ? zaduzenja.get(i)[3] : "0000-00-00";  // t3 += '0000-00-00' else t3 += formatdatetime('yyyy-mm-dd', ADOQuery2['rok']);
-            t4 = (zaduzenja.get(i)[4] != null) ? zaduzenja.get(i)[4] : "0000-00-00";  // t4 += '0000-00-00' else t3 += formatdatetime('yyyy-mm-dd', ADOQuery2['rok']);
+            t2 = (zaduzenja.get(i)[2] != null) ? formatDate(zaduzenja.get(i)[2]) : "0000-00-00";  // t2 += formatdatetime('yyyy-mm-dd', ADOQuery2['datum']);
+            t3 = (zaduzenja.get(i)[3] != null) ? formatDate(zaduzenja.get(i)[3]) : "0000-00-00";  // t3 += '0000-00-00' else t3 += formatdatetime('yyyy-mm-dd', ADOQuery2['rok']);
+            t4 = (zaduzenja.get(i)[4] != null) ? formatDate(zaduzenja.get(i)[4]) : "0000-00-00";  // t4 += '0000-00-00' else t3 += formatdatetime('yyyy-mm-dd', ADOQuery2['rok']);
             t5 = (zaduzenja.get(i)[5] != null) ? zaduzenja.get(i)[5] : "0";
             t6 = (zaduzenja.get(i)[6] != null) ? zaduzenja.get(i)[6] : "0";
             t7 = (zaduzenja.get(i)[7] != null) ? zaduzenja.get(i)[7] : "0";
@@ -222,9 +223,9 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
             v7 = (zaduzenja.get(i)[25] != null) ? zaduzenja.get(i)[25] : "0";
             v8 = (zaduzenja.get(i)[26] != null) ? zaduzenja.get(i)[26] : "0";
 
-            t2 = "0000-00-00";
-            t3 = "0000-00-00";
-            t4 = "0000-00-00";
+            //t2 = "0000-00-00";
+            //t3 = "0000-00-00";
+            //t4 = "0000-00-00";
 
             slog = " ('" + zaduzenja.get(i)[0] + a + t1 + a + t2;
             slog += a + t3 + a + t4 + a + t5;
@@ -400,16 +401,26 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
         return adresa;
     }
 
-    static void izlaz() {
-        System.out.println("Zatvaram bazu");
+    public static void izlaz() {
+        System.out.println("Zatvaram baze");
         if (dbLoc != null) {
             dbLoc.close();
+            System.out.println("Lokalna baza zatvorena");
         }
         if (dbRemote != null) {
             dbRemote.close();
+            System.out.println("Udaljena baza zatvorena");
         }
+        System.out.println("- KRAJ RADA -");
     }
 
+    private String formatDate(String datum) {
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        //String godina = sdf.format(new Date()).substring(0, 4);
+        //2018-03-18
+        return datum.substring(0, 10);
+    }
+    
     @Override
     public void run() {
         //init();
@@ -431,7 +442,9 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
         if (redovaZaduzenja > 0) {
             posaljiBazi(upitiZaduzenja);
         }
-        File file = new File("d:/sviUpiti.txt");
+        
+        /*
+        File file = new File("d:/sviUpiti-BRISI.txt");
         BufferedWriter writer = null;
         try {
             writer = new BufferedWriter(new FileWriter(file));
@@ -450,8 +463,12 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
                 }
             }
         }
+        */
+        
         p.extPrikazInfo("Commit udaljene baze...");
         dbRemote.commit();
+        p.extPrikazInfo("Obeležavam celu lokalnu bazu kao sinhronizovanu");
+        markirajCeluBazu(true);
         p.extPrikazInfo("Commit lokalne baze...");
         dbLoc.commit();
         p.extKrajSync();
@@ -498,14 +515,11 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
             //upiti.append("\n");
             upiti.setLength(0);
             upiti.append(pocetak);
-            markiraj(id, tabela);
+            //markirajRed(id, tabela);
         }
 
     }
 
-    private void markiraj(String id, String tabela) {
-        String upit = "UPDATE " + tabela + " SET synced=true WHERE id=" + id;
-    }
 
     private boolean posaljiBazi(StringBuilder upiti) {
         upiti.append(";\n");
@@ -764,25 +778,43 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
         return true;
     }
 
+    private void markirajRed(String id, String tabela) {
+        String upit = "UPDATE " + tabela + " SET synced=true WHERE id=" + id;
+        dbLoc.simpleQuery(upit);
+    }
+    
     private void markirajCeluTabelu(String tabela) {
         String upit = "UPDATE " + tabela + " SET synced=true";
         String rezult = dbLoc.simpleQuery(upit);
         if (!rezult.equals("OK")) p.extPrikazInfo("Greška kod markiranja podataka u tabeli " + tabela + "!\n" + rezult + "\n");
     }
-
-    private void resetujSinhronizaciju(ArrayList<String[]> rez) {
-        String uspeh;
+    
+    public static void markirajCeluBazu(boolean mark) {
+        String upit = "SELECT id, br, adresa, pib, tabelastanova, tabelabanka, tabelazaduzenja "
+                + "FROM zgrade "
+                + "WHERE brisano = false AND skriveno = false "
+                + "ORDER BY adresa";
+        ArrayList<String[]> rez = dbLoc.getArr(upit);
         for (String[] s : rez) {
-            String upit = "UPDATE " + s[4] + " SET synced=false WHERE skriveno=false";
-            uspeh = dbLoc.simpleQuery(upit);
-            p.extPrikazInfo("Reset " + s[4] + ", response: " + uspeh);
-            upit = "UPDATE " + s[5] + " SET synced=false WHERE brisano=false";
-            uspeh = dbLoc.simpleQuery(upit);
-            p.extPrikazInfo("Reset " + s[5] + ", response: " + uspeh);
-            upit = "UPDATE " + s[6] + " SET synced=false WHERE brisano=false";
-            uspeh = dbLoc.simpleQuery(upit);
-            p.extPrikazInfo("Reset " + s[6] + ", response: " + uspeh);
+            String tabelastanova = s[4];
+            String tabelabanka = s[5];
+            String tabelazaduzenja = s[6];
+            upit = "UPDATE " + tabelastanova + " SET synced=" + mark;
+            p.extPrikazInfo("Markiram tabelu " + tabelastanova);
+            System.out.println(upit);
+            dbLoc.simpleQuery(upit);
+            upit = "UPDATE " + tabelabanka + " SET synced=" + mark;
+            //p.extPrikazInfo(upit);
+            System.out.println(upit);
+            dbLoc.simpleQuery(upit);
+            upit = "UPDATE " + tabelazaduzenja + " SET synced=" + mark;
+            //p.extPrikazInfo(upit);
+            System.out.println(upit);
+            dbLoc.simpleQuery(upit);
         }
+        dbLoc.commit();
+        p.extPrikazInfo("Cela baza je markirana!");
+        System.out.println("Cela baza je markirana!");
     }
 
     private String obrisiRemoteBazu() {

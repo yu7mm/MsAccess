@@ -1,11 +1,12 @@
 
 <DEVELOPING>true</DEVELOPING>
 <DEBUG>true</DEBUG>
+<ADVOPT>true</ADVOPT>
 
 <BAZALOCAL>D:/Java/bazazgrada.mdb</BAZALOCAL>
 <BAZALOCALUSER></BAZALOCALUSER>
 <BAZALOCALPASS></BAZALOCALPASS>
-<BAZALOCALURL>D:/Java/bazazgrada.mdb/baza?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true</BAZALOCALURL>
+<BAZALOCALURL>D:/Java/bazazgrada.mdb?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true</BAZALOCALURL>
 <BAZALOCALURL>D:/Java/bazazgrada.mdb</BAZALOCALURL>
 
 
@@ -16,19 +17,13 @@
 
 
 
+<BAZAREMOTE>bitsoft_rs_db_5</BAZAREMOTE>
+<BAZAREMOTEUSER>greenclea@b53409</BAZAREMOTEUSER>
+<BAZAREMOTEPASS>rhv,+7C>P*N.>A8></BAZAREMOTEPASS>
+<BAZAREMOTEURL>mysql685.loopia.se:3306/bitsoft_rs_db_5</BAZAREMOTEURL>
+<BAZAREMOTEURL>mysql685.loopia.se:3306/bitsoft_rs_db_5?&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true</BAZAREMOTEURL>
+
 <BAZAREMOTEUSER>root</BAZAREMOTEUSER>
 <BAZAREMOTEPASS>root</BAZAREMOTEPASS>
 <BAZAREMOTEURL>localhost:3306/bitsoft_rs_db_5?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true</BAZAREMOTEURL>
 
-<BAZAREMOTE>bitsoft_rs_db_5</BAZAREMOTE>
-<BAZAREMOTEUSER>greenclea@b53409</BAZAREMOTEUSER>
-<BAZAREMOTEPASS>rhv,+7C>P*N.>A8></BAZAREMOTEPASS>
-<BAZAREMOTEURL>mysql685.loopia.se:3306/bitsoft_rs_db_5?&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&rewriteBatchedStatements=true</BAZAREMOTEURL>
-<BAZAREMOTEURL>mysql685.loopia.se:3306/bitsoft_rs_db_5</BAZAREMOTEURL>
-
-
-
-<ADVOPT>true</ADVOPT>
-
-
-  

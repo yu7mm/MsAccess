@@ -24,6 +24,8 @@ public class Pocetna extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         lblRemoteStatus = new javax.swing.JLabel();
+        btnMarkirajFalse = new javax.swing.JButton();
+        btnMarkirajTrue = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sinhronizacija baze podataka");
@@ -44,7 +46,7 @@ public class Pocetna extends javax.swing.JFrame {
 
         lblStatus.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblStatus.setForeground(new java.awt.Color(255, 0, 0));
-        lblStatus.setText("Učitavam bazu podataka, molim sačekajte...");
+        lblStatus.setText("Učitavam lokalnu bazu podataka, molim sačekajte...");
 
         taText.setColumns(20);
         taText.setRows(5);
@@ -69,6 +71,24 @@ public class Pocetna extends javax.swing.JFrame {
         lblRemoteStatus.setForeground(new java.awt.Color(255, 0, 0));
         lblRemoteStatus.setText(" ");
 
+        btnMarkirajFalse.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnMarkirajFalse.setText("Markiraj false");
+        btnMarkirajFalse.setEnabled(false);
+        btnMarkirajFalse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMarkirajFalseActionPerformed(evt);
+            }
+        });
+
+        btnMarkirajTrue.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnMarkirajTrue.setText("Markiraj true");
+        btnMarkirajTrue.setEnabled(false);
+        btnMarkirajTrue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMarkirajTrueActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -76,20 +96,26 @@ public class Pocetna extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnSinhronizuj, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(92, 92, 92)
-                        .addComponent(btnZgrade, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(61, 61, 61)
+                        .addComponent(btnMarkirajFalse, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnMarkirajTrue)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 730, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblRemoteStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(26, 26, 26))
+                                .addComponent(btnSinhronizuj, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(92, 92, 92)
+                                .addComponent(btnZgrade, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(61, 61, 61)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(lblStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblRemoteStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(26, 26, 26))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -100,17 +126,20 @@ public class Pocetna extends javax.swing.JFrame {
                 .addComponent(lblRemoteStatus)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(8, 8, 8)
-                        .addComponent(jLabel1)
-                        .addGap(30, 30, 30))
+                        .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnSinhronizuj, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnZgrade, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(40, 40, 40)))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnMarkirajFalse, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnMarkirajTrue, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(21, 21, 21)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
                 .addGap(27, 27, 27))
         );
 
@@ -144,9 +173,9 @@ public class Pocetna extends javax.swing.JFrame {
     private void btnSinhronizujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSinhronizujActionPerformed
         btnSinhronizuj.setEnabled(false);
         btnZgrade.setEnabled(false);
-        taText.setText("Počinje sinhrnizacija...\n");
+        taText.setText("Počinje sinhronizacija...\n");
         lblStatus.setForeground(Color.red);
-        lblStatus.setText("Započinjem sinhronizaciju...");
+        lblStatus.setText("Sinhronizacija u toku...");
         MsAccessDatabaseConnectionInJava8 accbaza = new MsAccessDatabaseConnectionInJava8();
         
         try {
@@ -182,6 +211,14 @@ public class Pocetna extends javax.swing.JFrame {
         taText.append("Zatvaranje baza podataka...");
         MsAccessDatabaseConnectionInJava8.izlaz();
     }//GEN-LAST:event_formWindowClosing
+
+    private void btnMarkirajFalseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMarkirajFalseActionPerformed
+        MsAccessDatabaseConnectionInJava8.markirajCeluBazu(false);
+    }//GEN-LAST:event_btnMarkirajFalseActionPerformed
+
+    private void btnMarkirajTrueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMarkirajTrueActionPerformed
+        MsAccessDatabaseConnectionInJava8.markirajCeluBazu(true);
+    }//GEN-LAST:event_btnMarkirajTrueActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -226,6 +263,8 @@ public class Pocetna extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnMarkirajFalse;
+    private javax.swing.JButton btnMarkirajTrue;
     private javax.swing.JButton btnSinhronizuj;
     private javax.swing.JButton btnZgrade;
     private javax.swing.JLabel jLabel1;
