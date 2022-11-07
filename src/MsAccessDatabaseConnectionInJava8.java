@@ -21,6 +21,8 @@ import javax.swing.JOptionPane;
 
 public class MsAccessDatabaseConnectionInJava8 implements Runnable {
 
+    
+    
     private static final Settings sett = new Settings();  // Ne dirati ovo!
     private static final DbBrokerLocal dbLoc = new DbBrokerLocal();
     private static final DbBrokerRemote dbRemote = new DbBrokerRemote();
@@ -32,7 +34,8 @@ public class MsAccessDatabaseConnectionInJava8 implements Runnable {
     private int redova, redovaStanovi, redovaBanka, redovaZaduzenja;
     private int redovaStanoviSum, redovaBankaSum, redovaZaduzenjaSum;
     public int maxRedova = 600;
-
+    
+    
     public synchronized boolean sinhronizuj() {
         String upit = "SELECT id, br, adresa, pib, tabelastanova, tabelabanka, tabelazaduzenja "
                 + "FROM zgrade "
