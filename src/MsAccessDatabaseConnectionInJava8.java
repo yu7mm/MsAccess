@@ -21,7 +21,7 @@ import javax.swing.JOptionPane;
 
 public class MsAccessDatabaseConnectionInJava8 implements Runnable {
 
-    
+    //fddg
     
     private static final Settings sett = new Settings();  // Ne dirati ovo!
     private static final DbBrokerLocal dbLoc = new DbBrokerLocal();
