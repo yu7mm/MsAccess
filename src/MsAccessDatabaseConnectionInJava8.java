@@ -10,6 +10,7 @@ public class MsAccessDatabaseConnectionInJava8 {
     public static void main(String[] args) {
         
         // variables
+        // Novo
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
